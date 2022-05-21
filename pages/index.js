@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+// import { useEffect, useState } from "react"
 
 import MeetupList from "../components/meetups/MeetupList"
 
@@ -19,16 +19,45 @@ const DUMMY_MEETUPS = [
   }
 ]
 
-function HomePage() {
+function HomePage(props) {
 
-  const [loadedMeetups, setLoadedMeetups] = useState([])
+  // const [loadedMeetups, setLoadedMeetups] = useState([])
 
-  useEffect(() => {
-    // send an http request to server to fetch some data
-    setLoadedMeetups(DUMMY_MEETUPS)
-  }, [])
+  // useEffect(() => {
+  //   // send an http request to server to fetch some data
+  //   setLoadedMeetups(DUMMY_MEETUPS)
+  // }, [])
+  
+  return <MeetupList meetups={props.meetups} />
+}
 
-  return <MeetupList meetups={loadedMeetups} />
+
+// always runs on server for each incoming request
+// export async function getServerSideProps(context) {
+
+//   const req = context.req;
+//   const res = context.res;
+  
+//   // fetch API data
+//   return {
+//     props: {
+//       meetups: DUMMY_MEETUPS
+//     }
+//   }
+// }
+
+
+// ensure pre-rendered page contains the data that needs to be awaited e.g data from a server
+export async function getStaticProps() {
+  // this never reaches to the client machine
+  // can fetch data from an api and always return an object here
+  // load and prepare summy data here
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    },
+    revalidate: 1
+  }
 }
 
 export default HomePage
